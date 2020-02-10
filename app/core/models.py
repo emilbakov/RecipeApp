@@ -77,12 +77,16 @@ class Recipe(models.Model):
         on_delete=models.CASCADE
     )
     title = models.CharField(max_length=255)
-    time_minutes = models.IntegerField()
-    price = models.DecimalField(max_digits=5, decimal_places=2)
+    price = models.IntegerField(null=True)
+    prepTime = models.IntegerField(null=True)
+    cookTime = models.IntegerField(null=True)
+    time_minutes = models.IntegerField(null=True)
     link = models.CharField(max_length=255, blank=True)
     ingredients = models.ManyToManyField('Ingredient')
+    recipeYield = models.IntegerField(null=True)
     tags = models.ManyToManyField('Tag')
     image = models.ImageField(null=True, upload_to=recipe_image_file_path)
+    is_published = models.BooleanField(default=True)
 
     def __str__(self):
         return self.title
