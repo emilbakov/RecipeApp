@@ -48,8 +48,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
 
 
-class Tag(models.Model):
-    """Tag to be used for a recipe"""
+class RecipeCategory(models.Model):
+    """RecipeCategory to be used for a recipe"""
     name = models.CharField(max_length=255)
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -80,11 +80,11 @@ class Recipe(models.Model):
     price = models.IntegerField(null=True)
     prepTime = models.IntegerField(null=True)
     cookTime = models.IntegerField(null=True)
-    time_minutes = models.IntegerField(null=True)
+    totalTime = models.IntegerField(null=True)
     link = models.CharField(max_length=255, blank=True)
     ingredients = models.ManyToManyField('Ingredient')
     recipeYield = models.IntegerField(null=True)
-    tags = models.ManyToManyField('Tag')
+    recipeCategory = models.ManyToManyField('RecipeCategory')
     image = models.ImageField(null=True, upload_to=recipe_image_file_path)
     is_published = models.BooleanField(default=True)
 
