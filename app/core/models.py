@@ -77,6 +77,7 @@ class Recipe(models.Model):
         on_delete=models.CASCADE
     )
     title = models.CharField(max_length=255)
+    description = models.TextField(blank=True)
     price = models.IntegerField(null=True)
     prepTime = models.IntegerField(null=True)
     cookTime = models.IntegerField(null=True)
@@ -85,6 +86,8 @@ class Recipe(models.Model):
     ingredients = models.ManyToManyField('Ingredient')
     recipeYield = models.IntegerField(null=True)
     recipeCategory = models.ManyToManyField('RecipeCategory')
+    recipeInstruction = models.TextField(blank=True)
+    recipeIngredient = models.TextField(blank=True)
     image = models.ImageField(null=True, upload_to=recipe_image_file_path)
     is_published = models.BooleanField(default=True)
 
