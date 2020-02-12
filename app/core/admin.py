@@ -28,8 +28,17 @@ class UserAdmin(BaseUserAdmin):
         'fields': ('email', 'password1', 'password2')
     }),
 )
+class RecipeAdmin(admin.ModelAdmin):
+  list_display = ('id', 'name', 'is_published','datePublished','description','keywords')
+  list_display_links = ('id', 'name')
+  list_filter = ('user',)
+  list_editable = ('is_published',)
+  search_fields = ('name', 'description',)
+  list_per_page = 25
+
 
 admin.site.register(models.User, UserAdmin)
+
 admin.site.register(models.RecipeCategory)
 admin.site.register(models.Ingredient)
 admin.site.register(models.Recipe)

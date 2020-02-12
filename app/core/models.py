@@ -76,20 +76,20 @@ class Recipe(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
     )
-    title = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
     price = models.IntegerField(null=True)
     prepTime = models.IntegerField(null=True)
     cookTime = models.IntegerField(null=True)
     totalTime = models.IntegerField(null=True)
     link = models.CharField(max_length=255, blank=True)
-    ingredients = models.ManyToManyField('Ingredient')
-    recipeYield = models.IntegerField(null=True)
-    recipeCategory = models.ManyToManyField('RecipeCategory')
+    ingredients = models.ManyToManyField('Ingredient',blank=True)
+    recipeYield = models.IntegerField(blank=True,null=True)
+    recipeCategorys = models.ManyToManyField('RecipeCategory',blank=True)
     recipeInstruction = models.TextField(blank=True)
     recipeIngredient = models.TextField(blank=True)
     image = models.ImageField(null=True, upload_to=recipe_image_file_path)
     is_published = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.title
+        return self.name
