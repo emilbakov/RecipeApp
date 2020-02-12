@@ -5,7 +5,7 @@ from rest_framework import viewsets, mixins, status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-from core.models import RecipeCategory, Ingredient, Recipe
+from core.models import RecipeCategory, Ingredient, Recipe,  AggregateRating
 
 
 from recipe import serializers
@@ -46,6 +46,25 @@ class IngredientViewSet(BaseRecipeAttrViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = serializers.IngredientSerializer
 
+class AggregateRatingViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.CreateModelMixin):
+
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    queryset = AggregateRating.objects.all()
+    serializer_class = serializers.AggregateRatingSerializer
+
+    def get_queryset(self):
+        assigned_only =bool(self.request.query_params.get('assigned_only'))
+        queryset = self.queryset
+        if assigned_only:
+            queryset=queryset.filter(recipe__isnull=False)
+
+        return queryset.filter(user=self.request.user).order_by('-name')
+
+    def perform_create(self, serializer):
+        """create Rating"""
+        serializer.save(user=self.request.user)
+
 class RecipeViewSet(viewsets.ModelViewSet):
     """Manage recipes in the database"""
     serializer_class = serializers.RecipeSerializer
@@ -61,10 +80,14 @@ class RecipeViewSet(viewsets.ModelViewSet):
         """Retrieve the recipes for the authenticated user"""
         recipeCategorys = self.request.query_params.get('recipeCategorys')
         ingredients = self.request.query_params.get('ingredients')
+        aggregateRating = self.request.query_params.get('aggregateRating')
         queryset = self.queryset
         if recipeCategorys:
             recipeCategory_ids = self._params_to_ints(recipeCategorys)
             queryset = queryset.filter(recipeCategorys__id__in=recipeCategory_ids)
+        if aggregateRating:
+            ingredient_ids = self._params_to_ints(aggregateRating)
+            queryset = queryset.filter(aggregateRating__id__in=ingredient_ids)
         if ingredients:
             ingredient_ids = self._params_to_ints(ingredients)
             queryset = queryset.filter(ingredients__id__in=ingredient_ids)

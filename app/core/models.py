@@ -47,6 +47,14 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
 
+class AggregateRating(models.Model):
+    name = models.CharField(max_length=254)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+    def __str__(self):
+        return self.name
 
 class RecipeCategory(models.Model):
     """RecipeCategory to be used for a recipe"""
@@ -77,6 +85,7 @@ class Recipe(models.Model):
         on_delete=models.CASCADE
     )
     name = models.CharField(max_length=255)
+    aggregateRating = models.ManyToManyField('AggregateRating',blank=True)
     description = models.TextField(blank=True)
     price = models.IntegerField(null=True)
     prepTime = models.IntegerField(null=True)
@@ -88,7 +97,7 @@ class Recipe(models.Model):
     recipeCategorys = models.ManyToManyField('RecipeCategory',blank=True)
     recipeInstruction = models.TextField(blank=True)
     recipeIngredient = models.TextField(blank=True)
-    image = models.ImageField(null=True, upload_to=recipe_image_file_path)
+    image = models.ImageField(blank=True, upload_to=recipe_image_file_path)
     is_published = models.BooleanField(default=True)
 
     def __str__(self):
