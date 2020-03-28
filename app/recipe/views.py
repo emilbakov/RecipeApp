@@ -19,15 +19,14 @@ class BaseRecipeAttrViewSet(viewsets.GenericViewSet,
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
-      """Return objects for current user"""
-      assigned_only = bool(self.request.query_params.get('assigned_only'))
-      queryset = self.queryset
-      if assigned_only:
-          queryset = queryset.filter(recipe__isnull=False)
+        """Return objects for current user"""
+        assigned_only = bool(self.request.query_params.get('assigned_only'))
+        queryset = self.queryset
+        if assigned_only:
+            queryset = queryset.filter(recipe__isnull=False)
 
-
-      return queryset.filter(
-        user=self.request.user
+        return queryset.filter(
+            user=self.request.user
         ).order_by('-name').distinct()
 
     def perform_create(self, serializer):
@@ -64,6 +63,7 @@ class AggregateRatingViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mix
     def perform_create(self, serializer):
         """create Rating"""
         serializer.save(user=self.request.user)
+        
 
 class RecipeViewSet(viewsets.ModelViewSet):
     """Manage recipes in the database"""
@@ -73,8 +73,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
 
     def _params_to_ints(self, qs):
-      """Convert a list of string IDs to a list of integers"""
-      return [int(str_id) for str_id in qs.split(',')]
+        """Convert a list of string IDs to a list of integers"""
+        return [int(str_id) for str_id in qs.split(',')]
 
     def get_queryset(self):
         """Retrieve the recipes for the authenticated user"""
@@ -104,8 +104,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
       return self.serializer_class
 
     def perform_create(self, serializer):
-      """Create a new recipe"""
-      serializer.save(user=self.request.user)
+        """Create a new recipe"""
+        serializer.save(user=self.request.user)
 
     @action(methods=['POST'], detail=True, url_path='upload-image')
     def upload_image(self, request, pk=None):
