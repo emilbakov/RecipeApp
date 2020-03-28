@@ -28,6 +28,8 @@ class UserAdmin(BaseUserAdmin):
         'fields': ('email', 'password1', 'password2')
     }),
 )
+
+
 class RecipeAdmin(admin.ModelAdmin):
   list_display = ('id', 'name', 'is_published','description',)
   list_display_links = ('id', 'name')
