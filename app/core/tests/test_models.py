@@ -9,9 +9,9 @@ class ModelTest(TestCase):
         email = 'e@bakov.com'
         password = 'Test123'
         user = get_user_model().object.create_user(
-            email=email
+            email=email,
             password=password
         )
-        
+
     self.assertEqual(user.email, email)
     self.assertTrue(user.check_password(password))    
