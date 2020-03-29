@@ -11,6 +11,7 @@ class RecipeCategorySerializer(serializers.ModelSerializer):
         fields = ('id', 'name')
         read_only_Fields = ('id',)
 
+
 class IngredientSerializer(serializers.ModelSerializer):
     """Serializer for an ingredient object"""
 
@@ -19,12 +20,14 @@ class IngredientSerializer(serializers.ModelSerializer):
         fields = ('id', 'name')
         read_only_fields = ('id',)
 
+
 class AggregateRatingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AggregateRating
         fields = ('id', 'name')
         read_only_fields = ('id',)
+
 
 class RecipeSerializer(serializers.ModelSerializer):
     """Serialize a recipe"""
@@ -37,22 +40,25 @@ class RecipeSerializer(serializers.ModelSerializer):
         queryset=RecipeCategory.objects.all()
     )
     aggregateRating = serializers.PrimaryKeyRelatedField(
-        many = True,
-        queryset= AggregateRating.objects.all()
+        many=True,
+        queryset=AggregateRating.objects.all()
     )
 
     class Meta:
         model = Recipe
         fields = (
-            'id', 'name','prepTime','cookTime','totalTime', 'ingredients', 'recipeInstruction', 'recipeIngredient', 'recipeCategorys', 'price',
-            'link','recipeYield','aggregateRating' 
+            'id', 'name', 'prepTime', 'cookTime', 'totalTime', 'ingredients',
+            'recipeInstruction', 'recipeIngredient', 'recipeCategorys',
+            'price', 'link', 'recipeYield', 'aggregateRating'
         )
         read_only_fields = ('id',)
-        
+
+
 class RecipeDetailSerializer(RecipeSerializer):
     ingredients = IngredientSerializer(many=True, read_only=True)
     recipeCategorys = RecipeCategorySerializer(many=True, read_only=True)
-    aggregateRating = AggregateRatingSerializer(many=True, read_only=True)        
+    aggregateRating = AggregateRatingSerializer(many=True, read_only=True)
+
 
 class RecipeImageSerializer(serializers.ModelSerializer):
     """Serializer for uploading images to recipe"""
