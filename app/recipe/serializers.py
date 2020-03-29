@@ -40,16 +40,16 @@ class RecipeSerializer(serializers.ModelSerializer):
         queryset=RecipeCategory.objects.all()
     )
     aggregateRating = serializers.PrimaryKeyRelatedField(
-        many = True,
-        queryset= AggregateRating.objects.all()
+        many=True,
+        queryset=AggregateRating.objects.all()
     )
-
 
     class Meta:
         model = Recipe
         fields = (
-            'id', 'name', 'prepTime', 'cookTime', 'totalTime', 'ingredients', 'recipeInstruction', 'recipeIngredient', 'recipeCategorys',
-            'price','link', 'recipeYield', 'aggregateRating' 
+            'id', 'name', 'prepTime', 'cookTime', 'totalTime', 'ingredients',
+            'recipeInstruction', 'recipeIngredient', 'recipeCategorys',
+            'price', 'link', 'recipeYield', 'aggregateRating'
         )
         read_only_fields = ('id',)
 
@@ -57,7 +57,7 @@ class RecipeSerializer(serializers.ModelSerializer):
 class RecipeDetailSerializer(RecipeSerializer):
     ingredients = IngredientSerializer(many=True, read_only=True)
     recipeCategorys = RecipeCategorySerializer(many=True, read_only=True)
-    aggregateRating = AggregateRatingSerializer(many=True, read_only=True)        
+    aggregateRating = AggregateRatingSerializer(many=True, read_only=True)
 
 
 class RecipeImageSerializer(serializers.ModelSerializer):
