@@ -103,6 +103,9 @@ class Recipe(models.Model):
     recipeCategorys = models.ManyToManyField('RecipeCategory', blank=True)
     recipeInstruction = models.TextField(blank=True)
     recipeIngredient = models.TextField(blank=True)
+    image_id = models.IntegerField(null=True)
+    image_x = models.URLField( blank=True)
+    image_url = models.URLField( blank=True)
     image = models.ImageField(blank=True, upload_to=recipe_image_file_path)
     is_published = models.BooleanField(default=True)
 
